@@ -26,7 +26,7 @@ void str_trim(char *str) {
         end--;
     }
 
-    *end = '\0'; // Kết thúc chuỗi
+    *end = '\0'; // end_string
 
     if (start != str) {
         memmove(str, start, end - start + 1);

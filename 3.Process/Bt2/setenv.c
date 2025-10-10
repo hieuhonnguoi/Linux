@@ -7,18 +7,17 @@ int main(int argc, char const *argv[]){
     int ret_val;
     int status;
 
-    //Thiết lập môi trường
+    //Create enviroment
     setenv("MYCOMMAND","ls",1);
 
-    //Khởi tạo chương trình con
+    //Initial 
     ret_val = fork();
 
     if(ret_val < 0){
         printf("Fail to run children process");
         exit(1);
-    } 
-    else if(ret_val == 0){
-        //Chạy chương trình con
+    } else if(ret_val == 0){
+        //Child process
         printf("Children's ID: PID = %d\n", getpid());
 
         char *cmt = getenv("MYCOMMAND");
@@ -29,13 +28,12 @@ int main(int argc, char const *argv[]){
             printf("Children excuting with: %s\n",cmt);
         }
 
-        //thay thế bằng lệnh exac
         execlp(cmt,cmt,NULL);
-        //nếu fail
         perror("Fail to execlp");
         exit(1);
+
     }else{
-        //Chạy chương trình cha
+        //Parent process
         printf("Parent's ID: PID = %d\n", getpid());
         wait(&status);
         if(WIFEXITED(status)){
@@ -47,6 +45,3 @@ int main(int argc, char const *argv[]){
     return 0;
 }
 
-//Sau khi thực thi lệnh exec() thì địa chỉ của tiến trình con vẫn giữ nguyên 
-// tuy nhiên mã nguồn không còn như lúc đầu mà chuyển sang không gian mới
-// chương trình sẽ không tiếp tục các lệnh sau exac 
